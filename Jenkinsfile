@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/chpcj4/my-app.git'
+                git branch: 'main', url: 'https://github.com/chpcj4/my-app.git'
             }
         }
         
@@ -28,7 +28,7 @@ pipeline {
         
         stage('Deploy (Optional)') {
             steps {
-                echo "Kubernetes에 배포하거나, 추가 작업을 여기에 작성할 수 있어."
+                echo "여기에 k8s 배포 스크립트 넣을 수 있어"
             }
         }
     }
