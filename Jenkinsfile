@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        MAVEN_HOME = "${tool 'maven'}"  // 만약 Jenkins에 Maven 툴 설치되어 있으면
-    }
-
     stages {
         stage('Checkout') {
             steps {
