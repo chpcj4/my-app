@@ -1,10 +1,44 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: sk025-my-app
+#   namespace: skala-practice
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: sk025-my-app
+#   template:
+#     metadata:
+#       annotations:
+#         prometheus.io/scrape: 'true'
+#         prometheus.io/port: '8081'
+#         prometheus.io/path: '/actuator/prometheus'
+#         update: c773988290c46e602860d96deed76072
+#       labels:
+#         app: sk025-my-app
+#     spec:
+#       serviceAccountName: default
+#       containers:
+#       - name: my-app
+#         image: amdp-registry.skala-ai.com/skala25a/sk025-my-second-app:1.0.kaniko-docker-8-05faed62e25a
+#         imagePullPolicy: Always
+#         env:
+#         - name: LOGGING_LEVEL
+#           value: DEBUG
+#         - name: USER_NAME
+#           value: sk025
+#         - name: NAMESPACE
+#           value: skala-practice
+
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sk025-my-app
   namespace: skala-practice
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: sk025-my-app
@@ -19,14 +53,40 @@ spec:
         app: sk025-my-app
     spec:
       serviceAccountName: default
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - sk025-my-app
+              topologyKey: "kubernetes.io/hostname"
       containers:
-      - name: my-app
-        image: amdp-registry.skala-ai.com/skala25a/sk025-my-second-app:1.0.kaniko-docker-9-7f9961aecb4f
-        imagePullPolicy: Always
-        env:
-        - name: LOGGING_LEVEL
-          value: DEBUG
-        - name: USER_NAME
-          value: sk025
-        - name: NAMESPACE
-          value: skala-practice
+        - name: my-app
+          image: amdp-registry.skala-ai.com/skala25a/sk025-my-second-app:1.0.kaniko-docker-8-05faed62e25a
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: myapp-config
+          ports:
+            - containerPort: 8080
+          startupProbe:
+            httpGet:
+              path: /health/startup
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health/liveness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health/readiness
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
