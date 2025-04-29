@@ -2,13 +2,13 @@ pipeline {
     agent any
 
     environment {
-        GIT_URL = 'https://github.com/himang10/tekton-source.git'
-        GIT_BRANCH = 'master' // 또는 master
+        GIT_URL = 'https://github.com/chpcj4/my-app.git'
+        GIT_BRANCH = 'main' // 또는 master
         GIT_ID = 'skala-github-id' // GitHub PAT credential ID
-        GIT_USER_NAME = 'himang10' // GitHub 사용자 이름
-        GIT_USER_EMAIL = 'himang10@gmail.com'
+        GIT_USER_NAME = 'chpcj4' // GitHub 사용자 이름
+        GIT_USER_EMAIL = 'chpcj4@gmail.com'
         IMAGE_REGISTRY = 'amdp-registry.skala-ai.com/skala25a'
-        IMAGE_NAME = 'sk000-my-app'
+        IMAGE_NAME = 'sk025-my-second-app'
         IMAGE_TAG = '1.0.kaniko-docker'
         DOCKER_CREDENTIAL_ID = 'skala-image-registry-id'  // Harbor 인증 정보 ID
     }
