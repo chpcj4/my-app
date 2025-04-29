@@ -21,7 +21,7 @@ spec:
       serviceAccountName: default
       containers:
       - name: my-app
-        image: amdp-registry.skala-ai.com/skala25a/sk025-my-second-app:1.0.kaniko-docker-6-9177be7f2b3b
+        image: amdp-registry.skala-ai.com/skala25a/sk025-my-second-app:1.0.kaniko-docker-8-05faed62e25a
         imagePullPolicy: Always
         env:
         - name: LOGGING_LEVEL
