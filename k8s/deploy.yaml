@@ -31,7 +31,7 @@ spec:
               topologyKey: "kubernetes.io/hostname"
       containers:
         - name: my-app
-          image: amdp-registry.skala-ai.com/skala25a/sk025-my-second-app:1.0.kaniko-docker-12-03f79813adfa
+        image: amdp-registry.skala-ai.com/skala25a/sk025-my-second-app:1.0.kaniko-docker-13-bccbc8a1bb02
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
